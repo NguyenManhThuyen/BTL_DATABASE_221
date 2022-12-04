@@ -1,7 +1,9 @@
-﻿CREATE DATABASE BTL2
+CREATE DATABASE BTL_2
 
-use btl2;
+use btl_2;
 
+------------------------------------
+--CREATE ENTITY
 
 --DROP TABLE KhachHang
 CREATE TABLE KhachHang (
@@ -18,9 +20,8 @@ CREATE TABLE KhachHang (
 CREATE TABLE DonHang (
   Ma_DH int NOT NULL IDENTITY(1, 1),
   Ma_KH int NOT NULL UNIQUE,
-  Ho_Va_Ten varchar(45) NOT NULL,
+  Nguoi_Tao_Don varchar(45) NOT NULL,
   Ngay_Tao_Don time default GETDATE(),
-  Nguoi_Tao_Don varchar(45) default GETDATE(),
   Note varchar(200),
   PRIMARY KEY (Ma_DH),
   CONSTRAINT fk_Ma_KH1 FOREIGN KEY (Ma_KH) REFERENCES KhachHang(Ma_KH)
@@ -50,7 +51,6 @@ CREATE TABLE NhomKH (
 	PRIMARY KEY (Ten_Nhom),
 	CONSTRAINT fk_Ma_Nhom_KH1 FOREIGN KEY (Ma_KH) REFERENCES KhachHang(Ma_KH)
 );
-
 
 CREATE TABLE PhieuThuChi (
 	Ma_Phieu int NOT NULL,
@@ -133,6 +133,7 @@ CREATE TABLE VanChuyenCty (
 );
 
 ------------------------------------------------------------
+--CREATE RELATION 
 
 CREATE TABLE ThuocNhom (
 	Ma_KH int NOT NULL UNIQUE,
@@ -158,7 +159,6 @@ CREATE TABLE NhanVienTao (
 	CONSTRAINT fk_Ma_DH FOREIGN KEY (Ma_DH) REFERENCES DonHang(Ma_DH)
 );
 
-
 CREATE TABLE XuatBan (
 	EID int NOT NULL,
 	Ma_DH int NOT NULL,
@@ -166,7 +166,6 @@ CREATE TABLE XuatBan (
 	CONSTRAINT fk_EID3 FOREIGN KEY (EID) REFERENCES NhanVien(EID),
 	CONSTRAINT fk_Ma_DH2 FOREIGN KEY (Ma_DH) REFERENCES DonHang(Ma_DH)
 );
-
 
 CREATE TABLE KHTao (
 	Ma_DH int NOT NULL,
@@ -176,7 +175,6 @@ CREATE TABLE KHTao (
 	CONSTRAINT fk_Ma_DH3 FOREIGN KEY (Ma_DH) REFERENCES DonHang(Ma_DH)
 );
 
-
 CREATE TABLE BaoGom (
 	Ma_DH int NOT NULL,
 	Ma_HH varchar(10),
@@ -184,7 +182,6 @@ CREATE TABLE BaoGom (
 	CONSTRAINT fk_Ma_DH4 FOREIGN KEY (Ma_DH) REFERENCES DonHang(Ma_DH),
 	CONSTRAINT fk_Ma_HH1 FOREIGN KEY (Ma_HH) REFERENCES HangHoa(Ma_HH)
 );
-
 
 CREATE TABLE XuLy (
 	PID int NOT NULL UNIQUE,
@@ -202,7 +199,6 @@ CREATE TABLE VanChuyen (
 	CONSTRAINT fk_Ma_VC3 FOREIGN KEY (Ma_VC) REFERENCES DonViVanChuyen(Ma_VC)
 );
 
-
 CREATE TABLE GomKienHang (
 	Ma_Chuyen int NOT NULL UNIQUE,
 	Ma_HD int NOT NULL,
@@ -215,3 +211,22 @@ CREATE TABLE GomKienHang (
 	CONSTRAINT fk_Ma_HH2 FOREIGN KEY (Ma_HH) REFERENCES HangHoa(Ma_HH),
 	PRIMARY KEY (Ma_Chuyen,Ma_HD,Ma_HH)
 );
+
+--------------------------------------------
+
+--INSERT TABLE KHachHang
+SELECT * FROM KhachHang
+DELETE KhachHang
+INSERT INTO KhachHang VALUES (0849434447,'Nguyen Manh Thuyen','28 Lac Long Quan, TT Quang Phu, Huyen Cumgar, Tinh Daklak');
+INSERT INTO KhachHang VALUES (0986941029,'Nguyen Van A','12 Phan Van Tri, Quan Go Vap, TP HCM');
+INSERT INTO KhachHang VALUES (0947284932,'Nguyen Thi B','108 Mai Chi Tho, Quan Binh Thanh, TP HCM');
+INSERT INTO KhachHang VALUES (0926185736,'Nguyen Van C','54 Tran Xuan Soan, Quan 7, TP HCM');
+INSERT INTO KhachHang VALUES (0992837465,'Nguyen Van D','277 Nam Ky Khoi Nghia, Quan 3, TP HCM');
+
+-- INSERT TABLE DonHang
+
+INSERT INTO DonHang VALUES (100004,'Nguyen Van D','Hang de vo');
+INSERT INTO DonHang VALUES (100004,'Nguyen Van D','Giao hang nhanh giup em a :<');
+INSERT INTO DonHang VALUES (100004,'Nguyen Van D','Shop dong goi ky giup em');
+INSERT INTO DonHang VALUES (100002,'Nguyen Thi B',NULL);
+INSERT INTO DonHang VALUES (100001,'Nguyen Van A','Shop check hang ky giup em nha');
