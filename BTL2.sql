@@ -1,6 +1,6 @@
-CREATE DATABASE BTL_2
+CREATE DATABASE BTL4
 
-use btl_2;
+use BTL4;
 
 ------------------------------------
 --CREATE ENTITY
@@ -19,7 +19,7 @@ CREATE TABLE KhachHang (
 -- DROP TABLE DonHang
 CREATE TABLE DonHang (
   Ma_DH int NOT NULL IDENTITY(1, 1),
-  Ma_KH int NOT NULL UNIQUE,
+  Ma_KH int NOT NULL,
   Nguoi_Tao_Don varchar(45) NOT NULL,
   Ngay_Tao_Don time default GETDATE(),
   Note varchar(200),
@@ -224,9 +224,69 @@ INSERT INTO KhachHang VALUES (0926185736,'Nguyen Van C','54 Tran Xuan Soan, Quan
 INSERT INTO KhachHang VALUES (0992837465,'Nguyen Van D','277 Nam Ky Khoi Nghia, Quan 3, TP HCM');
 
 -- INSERT TABLE DonHang
+SELECT * FROM DonHang
+INSERT INTO DonHang VALUES (5,'Nguyen Van D',GETDATE(),'Hang de vo');
+INSERT INTO DonHang VALUES (5,'Nguyen Van D',GETDATE(),'Giao hang nhanh giup em a :<');
+INSERT INTO DonHang VALUES (5,'Nguyen Van D',GETDATE(),'Shop dong goi ky giup em');
+INSERT INTO DonHang VALUES (3,'Nguyen Thi B',GETDATE(),NULL);
+INSERT INTO DonHang VALUES (2,'Nguyen Van A',GETDATE(),'Shop check hang ky giup em nha');
 
-INSERT INTO DonHang VALUES (100004,'Nguyen Van D','Hang de vo');
-INSERT INTO DonHang VALUES (100004,'Nguyen Van D','Giao hang nhanh giup em a :<');
-INSERT INTO DonHang VALUES (100004,'Nguyen Van D','Shop dong goi ky giup em');
-INSERT INTO DonHang VALUES (100002,'Nguyen Thi B',NULL);
-INSERT INTO DonHang VALUES (100001,'Nguyen Van A','Shop check hang ky giup em nha');
+--INSERT TABLE HangHoa
+
+-------------------------------------------------
+--Thu Tuc INSERT UPDATE DROP dbo.KhachHang
+go
+CREATE PROCEDURE checkNMT ( 			@Ma_KH INT,
+						@SDT VARCHAR(10),
+						@Ho_Va_Ten  VARCHAR(45),
+					        @DIACHI  VARCHAR(96),
+					        @StatementType NVARCHAR(20) = '')
+AS
+  BEGIN
+      IF @StatementType = 'Insert'
+        BEGIN
+            INSERT INTO KhachHang   (Ma_KH,SDT,Ho_Va_Ten,DIACHI)
+            VALUES     (@Ma_KH,@SDT,@Ho_Va_Ten,@DIACHI)
+        END
+
+      IF @StatementType = 'Select'
+        BEGIN
+            SELECT *
+            FROM   KhachHang
+        END
+
+      IF @StatementType = 'Update'
+        BEGIN
+            UPDATE KhachHang
+            SET    SDT = @SDT,
+                   Ho_Va_Ten = @Ho_Va_Ten,
+                   DIACHI=@DIACHI
+            WHERE  Ma_KH=@Ma_KH
+        END
+      ELSE IF @StatementType = 'Delete'
+        BEGIN
+            DELETE FROM KhachHang
+            WHERE  Ma_KH = @Ma_KH
+        END
+  END
+  GO
+  
+  USE [BTL4]
+GO
+
+SET IDENTITY_INSERT dbo.KhachHang on
+go
+
+DECLARE	@return_value int
+
+EXEC	@return_value = [dbo].[checkNMT]
+		@Ma_KH = 6,
+		@SDT = N'0123456789',
+		@Ho_Va_Ten = N'Nguyen Thi E',
+		@DIACHI = N'Khu pho 6, Phuong Linh Trung, TP Thu Duc',
+		@StatementType = N'insert'
+
+SELECT	'Return Value' = @return_value
+
+GO
+  -------------------------------------
