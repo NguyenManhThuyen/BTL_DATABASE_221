@@ -1,6 +1,6 @@
-CREATE DATABASE BTL4
+CREATE DATABASE BTL5
 
-use BTL4;
+use BTL5;
 
 ------------------------------------
 --CREATE ENTITY
@@ -137,11 +137,13 @@ CREATE TABLE VanChuyenCty (
 --CREATE RELATION 
 
 CREATE TABLE ThuocNhom (
+	Ma_Nhom int NOT NULL UNIQUE,
 	Ma_KH int NOT NULL UNIQUE,
 	Ten_Nhom varchar(20) NOT NULL,
-	PRIMARY KEY (Ten_Nhom),
+	PRIMARY KEY (Ma_Nhom),
 	CONSTRAINT fk_Ma_KH4 FOREIGN KEY (Ma_KH) REFERENCES KhachHang(Ma_KH),
-	CONSTRAINT fk_Ten_Nhom FOREIGN KEY (Ten_nhom) REFERENCES NhomKH(Ten_Nhom)
+	CONSTRAINT fk_Ma_Nhom FOREIGN KEY (Ma_Nhom) REFERENCES NhomKH(Ma_Nhom)
+	--CONSTRAINT fk_Ten_Nhom FOREIGN KEY (Ten_Nhom) REFERENCES NhomKH(Ten_Nhom)
 );
 
 CREATE TABLE ThuChi (
