@@ -316,24 +316,21 @@ INSERT INTO HoaDon VALUES ('HD_0005', 'KH_00002', 'DH_00005', 250000, 8, GETDATE
 -- INSERT VanChuyenCty
 SELECT* FROM DonViVanChuyen
 SELECT* FROM NhanVien
+SELECT* FROM DonHang
 SELECT* FROM VanChuyenCty
 
-INSERT INTO VanChuyenCty VALUES (3001, );
-
-
+INSERT INTO VanChuyenCty VALUES (3001,'DH_00002','NV_00010');
+INSERT INTO VanChuyenCty VALUES (3003,'DH_00001','NV_00002');
+INSERT INTO VanChuyenCty VALUES (3005,'DH_00003','NV_00009');
 
 -- INSERT VAn chuyen ngoai
 SELECT* FROM VanChuyenNgoai
 
-INSERT INTO VanChuyenNgoai VALUES (3001, 'Oto', 'Insource');
+INSERT INTO VanChuyenNgoai VALUES (3002, 'DH_00004', '241828437','Nguyen Manh Dung');
+INSERT INTO VanChuyenNgoai VALUES (3004, 'DH_00005', '298790870','Nguyen Tien Hai');
 
 
-
-
-
-
----
-SELECT * FROM DonHang inner join KhachHang on DonHang.Ma_KH = KhachHang.Ma_KH
+--SELECT * FROM DonHang inner join KhachHang on DonHang.Ma_KH = KhachHang.Ma_KH
 
 --INSERT TABLE HangHoa
 
@@ -385,11 +382,3 @@ having count(*) > 0
 order by count(*) DESC
 
 EXEC Loc_KH_Co_Tren_0_DH_GiamDan1
-
-
-SELECT * FROM NhomKH
-
-INSERT INTO NhomKH VALUES (1001,'NHOM_1', 0, 1000000);
-INSERT INTO NhomKH VALUES (1002,'NHOM_2',1000000, 5000000);
-INSERT INTO NhomKH VALUES (1003, 'NHOM_3', 5000000,20000000);
-INSERT INTO NhomKH VALUES (1004, 'NHOM_4', 20000000,null);
