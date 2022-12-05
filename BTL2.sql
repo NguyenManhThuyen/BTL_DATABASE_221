@@ -1,18 +1,26 @@
-CREATE DATABASE BTL5
+CREATE DATABASE BTL7
 
-use BTL5;
+use BTL7;
 
 ------------------------------------
---CREATE ENTITY
-
+-- drop table NhomKH
+CREATE TABLE NhomKH (
+	Ma_Nhom int NOT NULL,
+	Ten_Nhom varchar(20) NOT NULL,
+	So_No_Min int default 0,
+	So_No_Max int default 0,
+	PRIMARY KEY (Ma_Nhom)
+	);
 --DROP TABLE KhachHang
 CREATE TABLE KhachHang (
   Ma_KH int NOT NULL IDENTITY(1, 1), -- tăng bước nhảy lên 1 & bắt đầu từ 1
   SDT varchar(10) NOT NULL,
   Ho_Va_Ten varchar(45) NOT NULL,
   DIACHI varchar(96) NOT NULL,
+  Ma_Nhom int NOT NULL,
   PRIMARY KEY (Ma_KH),
-  CONSTRAINT SDT_UNIQUE UNIQUE(SDT) -- ko có SĐT nào lặp lại
+  CONSTRAINT SDT_UNIQUE UNIQUE(SDT), -- ko có SĐT nào lặp lại,
+  CONSTRAINT fk_Ma_Nhom_KH2 FOREIGN KEY (Ma_Nhom) REFERENCES NhomKH(Ma_Nhom)
 );
 
 
@@ -43,15 +51,7 @@ CREATE TABLE HangHoa (
 	PRIMARY KEY (Ma_HH)
 );
 
--- drop table NhomKH
-CREATE TABLE NhomKH (
-	Ma_Nhom int NOT NULL UNIQUE,
-	Ten_Nhom varchar(20) NOT NULL,
-	So_No int default 0,
-	Ma_KH int NOT NULL UNIQUE,
-	PRIMARY KEY (Ma_Nhom),
-	CONSTRAINT fk_Ma_Nhom_KH1 FOREIGN KEY (Ma_KH) REFERENCES KhachHang(Ma_KH)
-);
+
 
 CREATE TABLE PhieuThuChi (
 	Ma_Phieu int NOT NULL,
@@ -220,11 +220,11 @@ CREATE TABLE GomKienHang (
 --INSERT TABLE KHachHang
 SELECT * FROM KhachHang
 DELETE KhachHang
-INSERT INTO KhachHang VALUES (0849434447,'Nguyen Manh Thuyen','28 Lac Long Quan, TT Quang Phu, Huyen Cumgar, Tinh Daklak');
-INSERT INTO KhachHang VALUES (0986941029,'Nguyen Van A','12 Phan Van Tri, Quan Go Vap, TP HCM');
-INSERT INTO KhachHang VALUES (0947284932,'Nguyen Thi B','108 Mai Chi Tho, Quan Binh Thanh, TP HCM');
-INSERT INTO KhachHang VALUES (0926185736,'Nguyen Van C','54 Tran Xuan Soan, Quan 7, TP HCM');
-INSERT INTO KhachHang VALUES (0992837465,'Nguyen Van D','277 Nam Ky Khoi Nghia, Quan 3, TP HCM');
+INSERT INTO KhachHang VALUES (0849434447,'Nguyen Manh Thuyen','28 Lac Long Quan, TT Quang Phu, Huyen Cumgar, Tinh Daklak',1001);
+INSERT INTO KhachHang VALUES (0986941029,'Nguyen Van A','12 Phan Van Tri, Quan Go Vap, TP HCM',1002);
+INSERT INTO KhachHang VALUES (0947284932,'Nguyen Thi B','108 Mai Chi Tho, Quan Binh Thanh, TP HCM',1001);
+INSERT INTO KhachHang VALUES (0926185736,'Nguyen Van C','54 Tran Xuan Soan, Quan 7, TP HCM',1003);
+INSERT INTO KhachHang VALUES (0992837465,'Nguyen Van D','277 Nam Ky Khoi Nghia, Quan 3, TP HCM',1002);
 
 -- INSERT TABLE DonHang
 SELECT * FROM DonHang
@@ -278,11 +278,19 @@ AS
   -------------------------------------
 
 --
-CREATE PROCEDURE Loc_KH_Co_Tren_0_DH_GiamDan
+CREATE PROCEDURE Loc_KH_Co_Tren_0_DH_GiamDan1
 AS
 SELECT Ho_Va_Ten,SDT,count(*) as 'So don da dat' FROM DonHang as  d inner join KhachHang as k on d.Ma_KH = k.Ma_KH
 GROUP BY k.Ho_Va_Ten,SDT
 having count(*) > 0
 order by count(*) DESC
 
-EXEC Loc_KH_Co_Tren_0_DH_GiamDan
+EXEC Loc_KH_Co_Tren_0_DH_GiamDan1
+
+
+SELECT * FROM NhomKH
+
+INSERT INTO NhomKH VALUES (1001,'NHOM_1', 0, 1000000);
+INSERT INTO NhomKH VALUES (1002,'NHOM_2',1000000, 5000000);
+INSERT INTO NhomKH VALUES (1003, 'NHOM_3', 5000000,20000000);
+INSERT INTO NhomKH VALUES (1004, 'NHOM_4', 20000000,null);
