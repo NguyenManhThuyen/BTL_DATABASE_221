@@ -1,6 +1,6 @@
-CREATE DATABASE BTL2
+CREATE DATABASE BTL4
 
-use BTL2;
+use BTL4;
 
 ------------------------------------
 -- drop table NhomKH
@@ -234,7 +234,7 @@ INSERT INTO KhachHang VALUES ('KH_00001', 0849434447,'Nguyen Manh Thuyen','28 La
 INSERT INTO KhachHang VALUES ('KH_00002',0986941029,'Nguyen Van A','12 Phan Van Tri, Quan Go Vap, TP HCM',1002,5000000,2124124);
 INSERT INTO KhachHang VALUES ('KH_00003',0947284932,'Nguyen Thi B','108 Mai Chi Tho, Quan Binh Thanh, TP HCM',1001,1000000,345544);
 INSERT INTO KhachHang VALUES ('KH_00004',0926185736,'Nguyen Van C','54 Tran Xuan Soan, Quan 7, TP HCM',1003,25000000,32076456);
-INSERT INTO KhachHang VALUES ('KH_00005',0992837465,'Nguyen Van D','277 Nam Ky Khoi Nghia, Quan 3, TP HCM',1002,20000000);
+INSERT INTO KhachHang VALUES ('KH_00005',0992837465,'Nguyen Van D','277 Nam Ky Khoi Nghia, Quan 3, TP HCM',1002,20000000,12000000);
 
 -- INSERT TABLE DonHang
 SELECT * FROM DonHang
