@@ -18,11 +18,12 @@ CREATE TABLE KhachHang (
   Ho_Va_Ten varchar(45) NOT NULL,
   DIACHI varchar(96) NOT NULL,
   Ma_Nhom int NOT NULL,
+  No_Max int not null,
+  So_No_Hien_Tai INT not null,
   PRIMARY KEY (Ma_KH),
   CONSTRAINT SDT_UNIQUE UNIQUE(SDT), 
   CONSTRAINT fk_Ma_Nhom_KH2 FOREIGN KEY (Ma_Nhom) REFERENCES NhomKH(Ma_Nhom)
 );
-
 
 -- DROP TABLE DonHang
 CREATE TABLE DonHang (
@@ -229,11 +230,11 @@ INSERT INTO NhomKH VALUES (1004, 'NHOM_4', 20000000, NULL);
 --INSERT TABLE KHachHang
 SELECT * FROM KhachHang
 DELETE KhachHang
-INSERT INTO KhachHang VALUES ('KH_00001', 0849434447,'Nguyen Manh Thuyen','28 Lac Long Quan, TT Quang Phu, Huyen Cumgar, Tinh Daklak',1001);
-INSERT INTO KhachHang VALUES ('KH_00002',0986941029,'Nguyen Van A','12 Phan Van Tri, Quan Go Vap, TP HCM',1002);
-INSERT INTO KhachHang VALUES ('KH_00003',0947284932,'Nguyen Thi B','108 Mai Chi Tho, Quan Binh Thanh, TP HCM',1001);
-INSERT INTO KhachHang VALUES ('KH_00004',0926185736,'Nguyen Van C','54 Tran Xuan Soan, Quan 7, TP HCM',1003);
-INSERT INTO KhachHang VALUES ('KH_00005',0992837465,'Nguyen Van D','277 Nam Ky Khoi Nghia, Quan 3, TP HCM',1002);
+INSERT INTO KhachHang VALUES ('KH_00001', 0849434447,'Nguyen Manh Thuyen','28 Lac Long Quan, TT Quang Phu, Huyen Cumgar, Tinh Daklak',1001,1000000,312424);
+INSERT INTO KhachHang VALUES ('KH_00002',0986941029,'Nguyen Van A','12 Phan Van Tri, Quan Go Vap, TP HCM',1002,5000000,2124124);
+INSERT INTO KhachHang VALUES ('KH_00003',0947284932,'Nguyen Thi B','108 Mai Chi Tho, Quan Binh Thanh, TP HCM',1001,1000000,345544);
+INSERT INTO KhachHang VALUES ('KH_00004',0926185736,'Nguyen Van C','54 Tran Xuan Soan, Quan 7, TP HCM',1003,25000000,32076456);
+INSERT INTO KhachHang VALUES ('KH_00005',0992837465,'Nguyen Van D','277 Nam Ky Khoi Nghia, Quan 3, TP HCM',1002,20000000);
 
 -- INSERT TABLE DonHang
 SELECT * FROM DonHang
@@ -373,7 +374,42 @@ AS
   GO
   -------------------------------------
 
---
+--2.2 Trigger
+CREATE TRIGGER trg_NhomKH
+	ON NhomKH
+	AFTER  UPDATE,INSERT,DELETE
+AS BEGIN
+	DECLARE @Ma_Nhom int
+	DECLARE @Ten_Nhom varchar(20)
+	-- TEMP TABLE
+	;WITH TMP AS (
+		SELECT Ma_Nhom FROM inserted
+		UNION
+		SELECT Ma_Nhom FROM deleted
+	)
+	SELECT @Ma_Nhom = Ma_Nhom FROM TMP
+	UPDATE ThuocNhom 
+	SET Ten_Nhom = @Ten_Nhom
+	WHERE Ma_Nhom = @Ma_Nhom
+END
+go
+--------------------------------
+CREATE TRIGGER trg_CapNhatSoLuongHangHoa
+	ON GomKienHang
+	AFTER INSERT
+AS BEGIN 
+	DECLARE @Ma_HH int
+	DECLARE @So_Luong_Mua int
+	SELECT @Ma_HH = Ma_HH ,  @So_Luong_Mua = So_Luong FROM inserted
+
+	-- Cap Nhap So Luong Ton Kho
+	UPDATE HangHoa
+	SET So_Luong_Ton_Kho = So_Luong_Ton_Kho - @So_Luong_Mua
+	WHERE Ma_HH = @Ma_HH
+END
+go
+--------------------------------
+--2.3 
 CREATE PROCEDURE Loc_KH_Co_Tren_0_DH_GiamDan1
 AS
 SELECT Ho_Va_Ten,SDT,count(*) as 'So don da dat' FROM DonHang as  d inner join KhachHang as k on d.Ma_KH = k.Ma_KH
