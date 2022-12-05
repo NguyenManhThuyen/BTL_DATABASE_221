@@ -45,10 +45,11 @@ CREATE TABLE HangHoa (
 
 -- drop table NhomKH
 CREATE TABLE NhomKH (
+	Ma_Nhom int NOT NULL UNIQUE,
 	Ten_Nhom varchar(20) NOT NULL,
 	So_No int default 0,
 	Ma_KH int NOT NULL UNIQUE,
-	PRIMARY KEY (Ten_Nhom),
+	PRIMARY KEY (Ma_Nhom),
 	CONSTRAINT fk_Ma_Nhom_KH1 FOREIGN KEY (Ma_KH) REFERENCES KhachHang(Ma_KH)
 );
 
@@ -231,14 +232,16 @@ INSERT INTO DonHang VALUES (5,'Nguyen Van D',GETDATE(),'Shop dong goi ky giup em
 INSERT INTO DonHang VALUES (3,'Nguyen Thi B',GETDATE(),NULL);
 INSERT INTO DonHang VALUES (2,'Nguyen Van A',GETDATE(),'Shop check hang ky giup em nha');
 
+SELECT * FROM DonHang inner join KhachHang on DonHang.Ma_KH = KhachHang.Ma_KH
+
 --INSERT TABLE HangHoa
 
 -------------------------------------------------
---Thu Tuc INSERT UPDATE DROP dbo.KhachHang
+--2.1 Thu Tuc INSERT UPDATE DROP dbo.KhachHang
 go
-CREATE PROCEDURE checkNMT ( 			@Ma_KH INT,
-						@SDT VARCHAR(10),
-						@Ho_Va_Ten  VARCHAR(45),
+CREATE PROCEDURE checkNMT ( @Ma_KH INT,
+							@SDT VARCHAR(10),
+						    @Ho_Va_Ten  VARCHAR(45),
 					        @DIACHI  VARCHAR(96),
 					        @StatementType NVARCHAR(20) = '')
 AS
@@ -270,23 +273,14 @@ AS
         END
   END
   GO
-  
-  USE [BTL4]
-GO
-
-SET IDENTITY_INSERT dbo.KhachHang on
-go
-
-DECLARE	@return_value int
-
-EXEC	@return_value = [dbo].[checkNMT]
-		@Ma_KH = 6,
-		@SDT = N'0123456789',
-		@Ho_Va_Ten = N'Nguyen Thi E',
-		@DIACHI = N'Khu pho 6, Phuong Linh Trung, TP Thu Duc',
-		@StatementType = N'insert'
-
-SELECT	'Return Value' = @return_value
-
-GO
   -------------------------------------
+
+--
+CREATE PROCEDURE Loc_KH_Co_Tren_0_DH_GiamDan
+AS
+SELECT Ho_Va_Ten,SDT,count(*) as 'So don da dat' FROM DonHang as  d inner join KhachHang as k on d.Ma_KH = k.Ma_KH
+GROUP BY k.Ho_Va_Ten,SDT
+having count(*) > 0
+order by count(*) DESC
+
+EXEC Loc_KH_Co_Tren_0_DH_GiamDan
